@@ -1,6 +1,6 @@
 /* Collection JSV : fonctionnement hors réseau.
    Changer VERSION à chaque mise à jour du site pour que les téléphones récupèrent la nouvelle version. */
-const VERSION = 'jsv-v6';
+const VERSION = 'jsv-v7';
 const FILES = [
   './', 'index.html', 'manifest.webmanifest', 'vendor/jsQR.js',
   'cards/c01.jpg', 'cards/c05.jpg', 'cards/c06.jpg', 'cards/c07.jpg', 'cards/c08.jpg', 'cards/dos.jpg',
@@ -8,7 +8,7 @@ const FILES = [
   'fonts/bebas-neue-latin-400-normal.woff2', 'fonts/cinzel-latin-600-normal.woff2', 'fonts/cinzel-latin-800-normal.woff2',
   'fonts/inter-latin-400-normal.woff2', 'fonts/inter-latin-500-normal.woff2', 'fonts/inter-latin-600-normal.woff2',
   'fonts/inter-latin-700-normal.woff2',
-  'dangers/angle.jpg', 'dangers/bac.jpg', 'dangers/coupe.jpg', 'dangers/gel.jpg', 'dangers/leve.jpg', 'dangers/marche.jpg', 'dangers/nuit.jpg', 'dangers/phone.jpg', 'dangers/pieton.jpg', 'dangers/recul.jpg', 'dangers/seringue.jpg', 'dangers/sol.jpg', 'dangers/tremie.jpg', 'dangers/tri.jpg', 'dangers/velo.jpg'
+  'dangers/angle.jpg', 'dangers/bac.jpg', 'dangers/batterie.jpg', 'dangers/coupe.jpg', 'dangers/epi.jpg', 'dangers/fatigue.jpg', 'dangers/gel.jpg', 'dangers/leve.jpg', 'dangers/marche.jpg', 'dangers/nuit.jpg', 'dangers/phone.jpg', 'dangers/pieton.jpg', 'dangers/precip.jpg', 'dangers/recul.jpg', 'dangers/routine.jpg', 'dangers/seringue.jpg', 'dangers/sol.jpg', 'dangers/soleil.jpg', 'dangers/tremie.jpg', 'dangers/tri.jpg', 'dangers/usager.jpg', 'dangers/velo.jpg'
 ];
 
 self.addEventListener('install', e => {

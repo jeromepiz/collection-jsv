@@ -732,7 +732,7 @@ async function decodeQR(file){
 /* ---------------- Combat ---------------- */
 let battle = null;
 const ROLES = ['atk','def','atk']; // manche 1 : tu attaques, 2 : tu défends, 3 : tu attaques
-const DANGER_ART = new Set(['angle','recul','phone','velo','sol','marche','pieton','gel','nuit','bac','leve','tremie','coupe','tri','seringue']);
+const DANGER_ART = new Set(['angle','recul','phone','velo','sol','marche','pieton','gel','nuit','bac','leve','tremie','coupe','tri','seringue','batterie','soleil','precip','routine','epi','usager','fatigue']);
 function dangerHTML(d){
   if(DANGER_ART.has(d.id)) return `<div class="dcard art"><img src="dangers/${d.id}.jpg" alt="">
     <div class="dtop"><div class="tag">Danger</div><div class="dt">${esc(d.name)}</div></div>
@@ -1033,7 +1033,7 @@ if('serviceWorker' in navigator && (location.protocol==='https:' || location.hos
 
 /* Mise à jour automatique : à chaque retour sur l'appli, on regarde si une nouvelle version est en ligne.
    APP_VERSION doit être identique au contenu de version.json. */
-const APP_VERSION = '2026-11-14.7';
+const APP_VERSION = '2026-11-14.8';
 let lastCheck = 0, pendingUpdate = false;
 function busy(){ return !!battle && battle.phase!=='end' || $('#modal').classList.contains('on'); }
 const RELOAD_KEY = 'jsv-reloaded-for';
