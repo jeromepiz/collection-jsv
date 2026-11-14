@@ -200,6 +200,35 @@ nav.tabs button.on{color:var(--gold)}
 .install .bk-head svg{color:var(--ok)}
 .steps{margin:12px 0 0;padding-left:20px;font-size:14px;line-height:1.6;color:var(--ink)}
 .steps li{margin-bottom:6px}
+/* Guide d'installation */
+.guide{position:fixed;inset:0;z-index:60;background:radial-gradient(900px 500px at 50% -120px,#3a2a1a,transparent 70%),var(--bg);overflow:auto;display:none;padding:calc(20px + env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom))}
+.guide.on{display:block;animation:fade .3s}
+.guide .gin{max-width:440px;margin:0 auto;display:flex;flex-direction:column;min-height:100%}
+.g-icon{width:84px;height:84px;border-radius:20px;margin:6px auto 12px;box-shadow:0 8px 30px #000a,0 0 0 1px #c8975a66;display:block}
+.g-title{font-family:Cinzel,serif;font-weight:800;color:var(--gold);font-size:22px;text-align:center;margin:0}
+.g-lead{text-align:center;color:var(--muted);font-size:14.5px;line-height:1.5;margin:8px 0 18px}
+.g-steps{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+.g-steps li{display:flex;gap:12px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
+.g-n{flex:none;width:30px;height:30px;border-radius:50%;background:var(--gold);color:#1d1208;font-weight:800;display:grid;place-items:center;font-size:15px}
+.g-steps .tx{font-size:15px;line-height:1.4}
+.g-steps .tx small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+.g-ico{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:7px;background:#efe7da;color:#1a6fe0;vertical-align:middle;margin:0 2px}
+.g-ico svg{width:18px;height:18px}
+.g-key{margin-top:14px;background:#14101b;border:1px dashed var(--bronze-d);border-radius:12px;padding:12px;text-align:center}
+.g-key .k{font-family:"Bebas Neue";font-size:30px;letter-spacing:.14em;margin:4px 0 8px;user-select:all;-webkit-user-select:all}
+.g-key p{margin:0;font-size:13px;color:var(--muted);line-height:1.45}
+.g-arrow{position:fixed;left:50%;bottom:calc(10px + env(safe-area-inset-bottom));transform:translateX(-50%);color:var(--gold);animation:bob 1.1s ease-in-out infinite;pointer-events:none}
+.g-arrow svg{width:40px;height:40px;filter:drop-shadow(0 0 8px #f0d79a88)}
+@keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,10px)}}
+.g-foot{margin-top:auto;padding-top:18px;padding-bottom:56px}
+.g-skip{display:block;margin:12px auto 0;background:none;border:0;color:var(--muted);font-size:13.5px;text-decoration:underline;text-underline-offset:3px;padding:8px}
+.topbar{display:none;align-items:center;gap:10px;background:#2a1e14;border:1px solid var(--bronze-d);border-radius:12px;padding:9px 12px;margin-bottom:12px;font-size:13px}
+.topbar.on{display:flex}
+.topbar span{flex:1;color:var(--ink)}
+.topbar button{background:var(--gold);color:#1d1208;border:0;border-radius:8px;padding:7px 12px;font-weight:700;font-size:13px}
+.welcome{margin-top:14px;text-align:center}
+.welcome b{display:block;font-family:Cinzel,serif;color:var(--gold);font-size:17px;margin-bottom:6px}
+.welcome p{margin:0 0 12px!important}
 .reveal-note{text-align:center;font-size:12.5px;color:var(--muted);margin-top:10px}
 </style>
 </head>
@@ -217,8 +246,16 @@ nav.tabs button.on{color:var(--gold)}
     </div>
   </header>
 
+  <div class="topbar" id="topbar"><span>L'appli n'est pas encore installée.</span><button id="tb-open">Installer</button></div>
+
   <!-- COLLECTION -->
   <section class="view on" id="v-col">
+    <div class="card-panel welcome" id="welcome" hidden>
+      <b>Bienvenue dans ta collection</b>
+      <p>Scanne le QR code de ta première carte pour la débloquer.</p>
+      <button class="btn primary" id="w-scan">Scanner ma première carte</button>
+      <button class="linkbtn" id="w-key" type="button">J'avais déjà des cartes : coller ma clé de sauvegarde</button>
+    </div>
     <div class="progress">
       <div><div class="num" id="p-num">0/9</div><div class="lbl">cartes</div></div>
       <div class="bar"><div class="fill" id="p-fill"></div></div>
@@ -276,6 +313,7 @@ nav.tabs button.on{color:var(--gold)}
 </div></nav>
 
 <div class="modal" id="modal"><div class="box" id="mbox"></div></div>
+<div class="guide" id="guide" role="dialog" aria-modal="true" aria-labelledby="g-title"><div class="gin" id="gin"></div></div>
 <canvas id="cv" hidden></canvas>
 
 <script>
@@ -420,6 +458,7 @@ document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>show(b.dat
 function owned(){ return CARDS.filter(c=>state.cards[c.id]); }
 function renderCollection(){
   const n = owned().length;
+  $('#welcome').hidden = n>0;
   $('#p-num').textContent = `${n}/${TOTAL}`;
   $('#p-fill').style.width = (n/TOTAL*100)+'%';
   $('#s-w').textContent = state.wins; $('#s-l').textContent = state.losses;
@@ -794,35 +833,128 @@ async function fromLink(){
 }
 const idbReady = idbGet().then(s=>{ if(s && s.cards){ state = merge(state, s); lsSave(); renderCollection(); renderBackup(); } });
 window.addEventListener('hashchange', fromLink);
-fromLink();
+const linkDone = fromLink();
 
-/* Installation sur l'écran d'accueil */
+/* ---------------- Installation guidée ----------------
+   Ouverte dans le navigateur d'un téléphone, l'appli guide l'installation pas à pas. */
+const UA = navigator.userAgent;
 const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
-const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
+const isIOS = /iphone|ipad|ipod/i.test(UA) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
+const isAndroid = /android/i.test(UA);
+const isMobile = isIOS || isAndroid;
+const inApp = /FBAN|FBAV|Instagram|Line\/|Snapchat|LinkedInApp|TikTok|; wv\)/i.test(UA);
+const iosOtherBrowser = isIOS && /CriOS|FxiOS|EdgiOS|OPiOS|GSA\//i.test(UA);
 let installEvt = null;
-if(!standalone){
-  window.addEventListener('beforeinstallprompt', e=>{ e.preventDefault(); installEvt = e; $('#install').hidden = false; });
-  if(isIOS) $('#install').hidden = false;
-}
-window.addEventListener('appinstalled', ()=>{ $('#install').hidden = true; });
-$('#b-install').onclick = async ()=>{
-  if(installEvt){
-    installEvt.prompt();
-    try{ const r = await installEvt.userChoice; if(r.outcome==='accepted') $('#install').hidden = true; }catch(e){}
-    installEvt = null; return;
+const SVG_SHARE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg>';
+const SVG_PLUS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/></svg>';
+const SVG_DOTS = '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>';
+const SVG_MORE = '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>';
+const step = (n,html)=>`<li><span class="g-n">${n}</span><span class="tx">${html}</span></li>`;
+const SKIP_KEY = 'jsv-guide-skip';
+function guideSkipped(){ try{ return sessionStorage.getItem(SKIP_KEY)==='1'; }catch(e){ return false; } }
+
+async function openGuide(){
+  const hasCards = Object.keys(state.cards).length>0;
+  let body = '', arrow = false;
+  if(inApp){
+    body = `<p class="g-lead">Tu es dans le navigateur d'une autre appli. Pour installer Collection JSV, ouvre cette page dans ${isIOS?'<b>Safari</b>':'<b>Chrome</b>'}.</p>
+      <ol class="g-steps">
+        ${step(1, `Touche le menu ${isIOS?'':`<span class="g-ico">${SVG_DOTS}</span>`} de cette fenêtre.`)}
+        ${step(2, `Choisis <b>Ouvrir dans ${isIOS?'Safari':'le navigateur'}</b>.<small>Ou copie le lien ci-dessous et colle-le dans ${isIOS?'Safari':'Chrome'}.</small>`)}
+      </ol>
+      <button class="btn mt" id="g-copylink">Copier le lien de l'appli</button>`;
+  }else if(isIOS && iosOtherBrowser){
+    body = `<p class="g-lead">Sur iPhone, l'installation se fait depuis <b>Safari</b>.</p>
+      <ol class="g-steps">
+        ${step(1, `Copie le lien de l'appli avec le bouton ci-dessous.`)}
+        ${step(2, `Ouvre <b>Safari</b>, colle le lien dans la barre d'adresse.`)}
+        ${step(3, `Suis le guide qui s'affiche dans Safari.`)}
+      </ol>
+      <button class="btn mt" id="g-copylink">Copier le lien de l'appli</button>`;
+  }else if(isIOS){
+    arrow = true;
+    body = `<p class="g-lead">3 gestes pour l'avoir sur ton écran d'accueil, comme une vraie appli.</p>
+      <ol class="g-steps">
+        ${step(1, `Touche le bouton <b>Partager</b> <span class="g-ico">${SVG_SHARE}</span> en bas de Safari.<small>Sur les iPhone récents, il est dans le menu <span class="g-ico">${SVG_MORE}</span> en bas à droite.</small>`)}
+        ${step(2, `Fais défiler et choisis <b>Sur l'écran d'accueil</b> <span class="g-ico">${SVG_PLUS}</span>`)}
+        ${step(3, `Touche <b>Ajouter</b>, puis ouvre <b>Collection JSV</b> depuis son icône.`)}
+      </ol>
+      ${hasCards ? `<div class="g-key"><p>Tes cartes déjà scannées ne passent pas toutes seules dans l'appli installée. Copie ta clé et colle-la dans l'appli.</p>
+        <div class="k" id="g-k">…</div><button class="btn" id="g-copykey">Copier ma clé</button></div>` : ''}`;
+  }else{
+    body = `<p class="g-lead">Installe-la pour l'ouvrir depuis ton écran d'accueil, même sans réseau.</p>
+      <button class="btn primary" id="g-install">Installer l'appli</button>
+      <div id="g-manual" ${installEvt?'hidden':''}>
+        <p class="g-lead" style="margin:16px 0 10px">Si rien ne s'ouvre :</p>
+        <ol class="g-steps">
+          ${step(1, `Touche le menu <span class="g-ico">${SVG_DOTS}</span> en haut à droite de Chrome.`)}
+          ${step(2, `Choisis <b>Installer l'application</b> ou <b>Ajouter à l'écran d'accueil</b>.`)}
+          ${step(3, `Confirme, puis ouvre <b>Collection JSV</b> depuis son icône.`)}
+        </ol>
+      </div>`;
   }
-  openModal(`<div class="detail">
-    <div class="t">Installer l'appli</div>
-    ${isIOS ? `<ol class="steps">
-      <li>Ouvre cette page dans <b>Safari</b>.</li>
-      <li>Touche le bouton <b>Partager</b> (le carré avec une flèche vers le haut).</li>
-      <li>Choisis <b>Sur l'écran d'accueil</b>, puis <b>Ajouter</b>.</li>
-      <li>Ouvre ensuite l'appli depuis son icône. Si tu avais déjà des cartes, tape ta clé de sauvegarde dans l'onglet <b>Ajouter</b>.</li></ol>`
-    : `<ol class="steps">
-      <li>Ouvre le menu du navigateur (les trois points).</li>
-      <li>Choisis <b>Installer l'application</b> ou <b>Ajouter à l'écran d'accueil</b>.</li></ol>`}
-    <button class="btn ghost close" data-close>Fermer</button></div>`);
+  $('#gin').innerHTML = `<img class="g-icon" src="icons/icon-192.png" alt="">
+    <h2 class="g-title" id="g-title">Installe Collection JSV</h2>
+    ${body}
+    <div class="g-foot"><button class="g-skip" id="g-skip">Continuer sans installer</button></div>
+    ${arrow?`<div class="g-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v15M6 13l6 6 6-6"/></svg></div>`:''}`;
+  $('#guide').classList.add('on');
+  document.body.style.overflow='hidden';
+  $('#g-skip').onclick = ()=>{ try{ sessionStorage.setItem(SKIP_KEY,'1'); }catch(e){} closeGuide(); };
+  const cl = $('#g-copylink'); if(cl) cl.onclick = ()=>copyText(location.origin+location.pathname, cl, 'Lien copié');
+  const ck = $('#g-copykey'); if(ck){ $('#g-k').textContent = await backupKey(); ck.onclick = ()=>copyText($('#g-k').textContent, ck, 'Clé copiée'); }
+  const gi = $('#g-install');
+  if(gi) gi.onclick = async ()=>{
+    if(installEvt){
+      installEvt.prompt();
+      try{ const r = await installEvt.userChoice; if(r.outcome==='accepted'){ installed(); return; } }catch(e){}
+      installEvt = null;
+    }
+    $('#g-manual').hidden = false;
+  };
+}
+function closeGuide(){ $('#guide').classList.remove('on'); document.body.style.overflow=''; refreshInstallUI(); }
+async function copyText(t, btn, done){
+  const old = btn.textContent;
+  try{ await navigator.clipboard.writeText(t); btn.textContent = done; }
+  catch(e){ btn.textContent = t; }
+  setTimeout(()=>btn.textContent = old, 2500);
+}
+let justInstalled = false;
+function installed(){ justInstalled = true; closeGuide(); }
+function refreshInstallUI(){
+  const show = !standalone && isMobile && !justInstalled;
+  $('#install').hidden = !show;
+  $('#topbar').classList.toggle('on', show && !$('#guide').classList.contains('on'));
+}
+window.addEventListener('beforeinstallprompt', e=>{
+  e.preventDefault(); installEvt = e;
+  const m = $('#g-manual'); if(m) m.hidden = true;
+});
+window.addEventListener('appinstalled', installed);
+$('#b-install').onclick = openGuide;
+$('#tb-open').onclick = openGuide;
+refreshInstallUI();
+
+/* Le guide s'affiche à l'ouverture dans le navigateur d'un téléphone
+   (après la carte débloquée si on arrive par le QR code d'une carte). */
+function maybeGuide(){
+  if(standalone || !isMobile || guideSkipped()) return;
+  if($('#modal').classList.contains('on')){
+    const obs = new MutationObserver(()=>{ if(!$('#modal').classList.contains('on')){ obs.disconnect(); setTimeout(openGuide,250); } });
+    obs.observe($('#modal'),{attributes:true,attributeFilter:['class']});
+  }else openGuide();
+}
+
+/* Accueil quand la collection est vide */
+$('#w-scan').onclick = ()=>{ show('add'); startCamera(); };
+$('#w-key').onclick = async ()=>{
+  let t = '';
+  try{ t = await navigator.clipboard.readText(); }catch(e){}
+  if(/SAV/i.test(t||'')){ show('add'); await redeem(t); }
+  else { show('add'); const i=$('#i-code'); i.focus(); addMsg("Tape ta clé de sauvegarde (SAV-…) dans le champ, puis OK.",''); }
 };
+Promise.resolve(linkDone).then(()=>setTimeout(maybeGuide, 300));
 
 /* Fonctionnement hors réseau */
 if('serviceWorker' in navigator && (location.protocol==='https:' || location.hostname==='localhost')){
