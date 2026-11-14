@@ -369,6 +369,7 @@ const ICONS = {
   seringue:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M40 10l14 14M47 17 22 42l-6-6 25-25M16 36l-4 4 12 12 4-4M12 52l-6 6M30 24l4 4M24 30l4 4"/></svg>',
   batterie:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="20" width="38" height="24" rx="3"/><path d="M48 28h6v8h-6"/><path d="M30 24l-6 9h8l-6 9"/></svg>',
   soleil:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="11"/><path d="M32 4v8M32 52v8M4 32h8M52 32h8M12 12l6 6M46 46l6 6M52 12l-6 6M18 46l-6 6"/></svg>',
+  boucle:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M50 26A20 20 0 0 0 14 22"/><path d="M14 10v12h12"/><path d="M14 38a20 20 0 0 0 36 4"/><path d="M50 54V42H38"/></svg>',
   horloge:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="34" r="22"/><path d="M32 22v12l8 6M24 6h16"/></svg>',
   gant:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 58V30l-6-10a4 4 0 0 1 7-4l5 8V10a4 4 0 0 1 8 0v14-16a4 4 0 0 1 8 0v18-12a4 4 0 0 1 8 0v26c0 10-6 18-14 18Z"/><path d="M8 8l48 48"/></svg>',
   cri:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12h48v30H30l-12 12V42H8Z"/><path d="M32 18v12M32 36v1"/></svg>',
@@ -417,8 +418,8 @@ const DANGERS = [
   // Organisation et comportements — atout : Le coordinateur QSE
   {id:'precip', icon:'precip', by:'c01', name:'La Précipitation', atk:5, def:5,
    tip:"« Le camion attend. La vie, non. » Prendre le temps du bon geste, c'est gagner la tournée."},
-  {id:'fini', icon:'horloge', by:'c01', name:'Le Fini-Parti', atk:5, def:4,
-   tip:"Finir plus tôt ne vaut pas un accident. On termine la tournée en sécurité, pas en courant."},
+  {id:'routine', icon:'boucle', by:'c01', name:'La Routine', atk:4, def:5,
+   tip:"« On a toujours fait comme ça » n'est pas une consigne. Chaque tournée est différente : on reste attentif du premier au dernier bac."},
   {id:'epi', icon:'gant', by:'c01', name:"L'EPI Oublié", atk:3, def:4,
    tip:"Gants, chaussures de sécurité, gilet haute visibilité : on les porte du premier au dernier bac."},
   {id:'usager', icon:'cri', by:'c01', name:"L'Usager Énervé", atk:4, def:3,
@@ -1032,7 +1033,7 @@ if('serviceWorker' in navigator && (location.protocol==='https:' || location.hos
 
 /* Mise à jour automatique : à chaque retour sur l'appli, on regarde si une nouvelle version est en ligne.
    APP_VERSION doit être identique au contenu de version.json. */
-const APP_VERSION = '2026-11-14.6';
+const APP_VERSION = '2026-11-14.7';
 let lastCheck = 0, pendingUpdate = false;
 function busy(){ return !!battle && battle.phase!=='end' || $('#modal').classList.contains('on'); }
 const RELOAD_KEY = 'jsv-reloaded-for';
