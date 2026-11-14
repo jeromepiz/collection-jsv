@@ -327,19 +327,19 @@ const TOTAL = 9;
 const CARDS = [
   {id:'c01', n:1, name:'Le coordinateur QSE', classe:'Le Chevalier de la Sécurité', cap:'ÉPÉE DE CONFORMITÉ',
    txt:"Tranche les non-conformités et fend le danger avant même qu'il ne frappe.", atk:5, def:5, legend:true,
-   img:'cards/c01.jpg', counter:'precip', hash:'afcb55d6315f5d040d5102578284a372b58ecdf7e01b0c59b1e3e84e185d2a15'},
+   img:'cards/c01.jpg', hash:'afcb55d6315f5d040d5102578284a372b58ecdf7e01b0c59b1e3e84e185d2a15'},
   {id:'c05', n:5, name:'Foxi chauffeur', classe:"L'Écuyer des Angles Morts", cap:'RÉTROVISEUR ENCHANTÉ',
    txt:"Il voit tout dans son miroir, sauf le collègue qui se cache pile derrière la benne pour « faire une surprise ».", atk:4, def:3,
-   img:'cards/c05.jpg', counter:'angle', hash:'94f883e4282fbb7fae4e2898b7f12a14003db9e4d73637b1c036ece161ae8d00'},
+   img:'cards/c05.jpg', hash:'94f883e4282fbb7fae4e2898b7f12a14003db9e4d73637b1c036ece161ae8d00'},
   {id:'c06', n:6, name:'Foxi collecte', classe:"L'Écuyer du Marchepied", cap:"BOTTES D'ADHÉRENCE",
    txt:"Trois points d'appui, zéro glissade : même la peau de banane la plus rusée du royaume a déclaré forfait.", atk:3, def:4,
-   img:'cards/c06.jpg', counter:'sol', hash:'05031e753a3216c6c876bd1790ef080538333e6913440eda7def11abc1d8e966'},
+   img:'cards/c06.jpg', hash:'05031e753a3216c6c876bd1790ef080538333e6913440eda7def11abc1d8e966'},
   {id:'c07', n:7, name:'Foxi ripeur', classe:"L'Écuyer du Tire-Bac", cap:'GANTELETS DU BON GESTE',
    txt:"Il tire le bac au lieu de le soulever : son dos le remercie chaque soir, son kiné s'ennuie.", atk:4, def:3,
-   img:'cards/c07.jpg', counter:'bac', hash:'ac0214aa9121c06366b4ba570172b6176b12ff4dab4f6f882aebd7785858fb1e'},
+   img:'cards/c07.jpg', hash:'ac0214aa9121c06366b4ba570172b6176b12ff4dab4f6f882aebd7785858fb1e'},
   {id:'c08', n:8, name:'Foxi tri', classe:"L'Écuyer du Tri", cap:'FLAIR DU TRI',
    txt:"Son museau ne se trompe jamais : le verre à gauche, le carton à droite, et l'erreur au fond de la benne.", atk:4, def:5,
-   img:'cards/c08.jpg', counter:'tri', hash:'37f4d8cb3b3b4c14082c7fbe1aa452604e627671c10c06771de98243da0c3364'},
+   img:'cards/c08.jpg', hash:'37f4d8cb3b3b4c14082c7fbe1aa452604e627671c10c06771de98243da0c3364'},
 ];
 const BACK = 'cards/dos.jpg';
 const BONUS = 2;
@@ -351,18 +351,75 @@ const ICONS = {
   bac:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 20h36l-4 34H18Z"/><path d="M10 20h44M24 20v-6h16v6"/><path d="M26 30v16M38 30v16"/><path d="M50 6l4 6M56 14l-6-2"/></svg>',
   tri:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M32 6 58 52H6Z"/><path d="M32 24v14M32 45v1"/></svg>',
   precip:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M36 4 14 36h16l-4 24 24-34H34Z"/></svg>',
+  recul:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M44 54V26a14 14 0 0 0-28 0v6"/><path d="M8 24l8 10 8-10"/></svg>',
+  phone:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><rect x="20" y="6" width="24" height="44" rx="4"/><path d="M29 43h6"/><path d="M8 56 56 8"/></svg>',
+  velo:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="44" r="10"/><circle cx="50" cy="44" r="10"/><path d="M14 44 24 24h20l6 20M24 24l8 20 12-20M20 16h8"/></svg>',
+  marche:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 52h16V40h16V28h16V16"/><circle cx="46" cy="10" r="4"/><path d="M40 22l-6 8"/></svg>',
+  pieton:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="34" cy="10" r="5"/><path d="M30 22l-8 12 10 4-4 16M30 22l10 8 8-2M32 38l10 16"/><path d="M6 58h52"/></svg>',
+  gel:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M32 6v52M9 19l46 26M55 19 9 45"/><path d="M26 10l6 6 6-6M26 54l6-6 6 6"/></svg>',
+  nuit:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M44 40A20 20 0 0 1 24 12a20 20 0 1 0 20 28Z"/><path d="M48 10v8M44 14h8"/></svg>',
+  leve:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 34h24l-3 22H23Z"/><path d="M18 34h28"/><path d="M32 26V6M24 14l8-8 8 8"/></svg>',
+  tremie:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20h52L46 52H18Z"/><path d="M18 30l8 8 8-8 8 8 8-8"/><path d="M32 4v10"/></svg>',
+  coupe:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 52 46 10l6 6-34 40Z"/><path d="M40 18l6 6"/><path d="M8 56l4-4"/></svg>',
+  seringue:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M40 10l14 14M47 17 22 42l-6-6 25-25M16 36l-4 4 12 12 4-4M12 52l-6 6M30 24l4 4M24 30l4 4"/></svg>',
+  batterie:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="20" width="38" height="24" rx="3"/><path d="M48 28h6v8h-6"/><path d="M30 24l-6 9h8l-6 9"/></svg>',
+  soleil:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="11"/><path d="M32 4v8M32 52v8M4 32h8M52 32h8M12 12l6 6M46 46l6 6M52 12l-6 6M18 46l-6 6"/></svg>',
+  horloge:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="34" r="22"/><path d="M32 22v12l8 6M24 6h16"/></svg>',
+  gant:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 58V30l-6-10a4 4 0 0 1 7-4l5 8V10a4 4 0 0 1 8 0v14-16a4 4 0 0 1 8 0v18-12a4 4 0 0 1 8 0v26c0 10-6 18-14 18Z"/><path d="M8 8l48 48"/></svg>',
+  cri:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12h48v30H30l-12 12V42H8Z"/><path d="M32 18v12M32 36v1"/></svg>',
+  fatigue:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14h14L10 30h14M34 30h12L34 44h12M48 6h8l-8 10h8"/></svg>',
 };
+/* by = la carte dont la capacité contre ce Danger (atout +2) */
 const DANGERS = [
-  {id:'angle', name:"L'Angle Mort", atk:4, def:4,
-   tip:"Hors du rétroviseur, hors de vue : on reste toujours dans le champ de vision du chauffeur, et pas de marche arrière sans guidage."},
-  {id:'sol', name:'Le Sol Glissant', atk:3, def:4,
+  // Conduite et manœuvres — atout : Foxi chauffeur
+  {id:'angle', icon:'angle', by:'c05', name:"L'Angle Mort", atk:4, def:4,
+   tip:"Hors du rétroviseur, hors de vue : on reste toujours dans le champ de vision du chauffeur."},
+  {id:'recul', icon:'recul', by:'c05', name:'La Marche Arrière', atk:5, def:4,
+   tip:"Marche arrière seulement pour une manœuvre de repositionnement, toujours guidée par un équipier visible dans le rétroviseur, personne sur le marchepied."},
+  {id:'phone', icon:'phone', by:'c05', name:'Le Téléphone au Volant', atk:4, def:3,
+   tip:"Au volant, le téléphone reste rangé. Un appel ou un message attendra l'arrêt du camion."},
+  {id:'velo', icon:'velo', by:'c05', name:'Le Cycliste Invisible', atk:3, def:4,
+   tip:"Vélos et trottinettes se glissent le long du camion : coup d'œil aux rétroviseurs avant de tourner ou de repartir."},
+  // Chutes et déplacements — atout : Foxi collecte
+  {id:'sol', icon:'sol', by:'c06', name:'Le Sol Glissant', atk:3, def:4,
    tip:"Trois points d'appui pour monter et descendre du marchepied. On ne saute jamais, même pressé."},
-  {id:'bac', name:'Le Bac Trop Lourd', atk:5, def:3,
+  {id:'marche', icon:'marche', by:'c06', name:'Le Marchepied en Marche', atk:4, def:3,
+   tip:"Sur le marchepied : 30 km/h maximum et jamais en marche arrière. On monte et on descend camion arrêté."},
+  {id:'pieton', icon:'pieton', by:'c06', name:'La Traversée Pressée', atk:4, def:4,
+   tip:"On évite de traverser la chaussée. Si c'est nécessaire : derrière le camion, en marchant, après avoir regardé la circulation."},
+  {id:'gel', icon:'gel', by:'c06', name:'Le Verglas', atk:3, def:5,
+   tip:"Par temps de gel : pas plus courts, appuis sûrs, et on signale les zones verglacées au chef d'équipe."},
+  {id:'nuit', icon:'nuit', by:'c06', name:'La Tournée de Nuit', atk:4, def:4,
+   tip:"Gilet haute visibilité fermé et propre, feux de travail allumés : être vu, c'est être protégé."},
+  // Gestes et machines — atout : Foxi ripeur
+  {id:'bac', icon:'bac', by:'c07', name:'Le Bac Trop Lourd', atk:5, def:3,
    tip:"On tire le bac, on ne le soulève pas. Un bac anormalement lourd se signale au chef d'équipe."},
-  {id:'tri', name:'Le Mauvais Tri', atk:3, def:5,
-   tip:"Bouteille de gaz, seringue, produit chimique dans un bac : on ne collecte pas, on signale."},
-  {id:'precip', name:'La Précipitation', atk:5, def:5,
+  {id:'leve', icon:'leve', by:'c07', name:'Le Lève-Conteneur', atk:5, def:4,
+   tip:"Personne dans la zone du lève-conteneur pendant le cycle. On ne retient jamais un bac à la main pendant qu'il monte."},
+  {id:'tremie', icon:'tremie', by:'c07', name:'La Trémie', atk:5, def:5,
+   tip:"Jamais la main ni un outil dans la trémie pendant le compactage. Un objet coincé : arrêt d'urgence, puis on prévient le chauffeur."},
+  {id:'coupe', icon:'coupe', by:'c07', name:'Le Sac Coupant', atk:3, def:4,
+   tip:"Gants anti-coupure obligatoires. On porte un sac écarté du corps, jamais contre la jambe."},
+  // Déchets dangereux et environnement — atout : Foxi tri
+  {id:'tri', icon:'tri', by:'c08', name:'Le Mauvais Tri', atk:3, def:5,
+   tip:"Bouteille de gaz, produit chimique, déchet suspect dans un bac : on ne collecte pas, on signale."},
+  {id:'seringue', icon:'seringue', by:'c08', name:'La Seringue Cachée', atk:4, def:4,
+   tip:"Une seringue ne se ramasse pas à mains nues. En cas de piqûre : on lave, on désinfecte, on va tout de suite aux urgences et on déclare l'accident."},
+  {id:'batterie', icon:'batterie', by:'c08', name:'La Batterie au Lithium', atk:5, def:4,
+   tip:"Piles et batteries peuvent prendre feu dans la benne. Fumée ou odeur de brûlé : on arrête le compactage, on s'éloigne et on applique la consigne incendie."},
+  {id:'soleil', icon:'soleil', by:'c08', name:'La Canicule', atk:4, def:4,
+   tip:"Par forte chaleur : de l'eau à portée de main, on boit souvent sans attendre la soif, et on signale tout malaise."},
+  // Organisation et comportements — atout : Le coordinateur QSE
+  {id:'precip', icon:'precip', by:'c01', name:'La Précipitation', atk:5, def:5,
    tip:"« Le camion attend. La vie, non. » Prendre le temps du bon geste, c'est gagner la tournée."},
+  {id:'fini', icon:'horloge', by:'c01', name:'Le Fini-Parti', atk:5, def:4,
+   tip:"Finir plus tôt ne vaut pas un accident. On termine la tournée en sécurité, pas en courant."},
+  {id:'epi', icon:'gant', by:'c01', name:"L'EPI Oublié", atk:3, def:4,
+   tip:"Gants, chaussures de sécurité, gilet haute visibilité : on les porte du premier au dernier bac."},
+  {id:'usager', icon:'cri', by:'c01', name:"L'Usager Énervé", atk:4, def:3,
+   tip:"Face à un usager agressif : on ne répond pas à la provocation, on s'éloigne et on prévient l'exploitation."},
+  {id:'fatigue', icon:'fatigue', by:'c01', name:'La Fatigue', atk:4, def:4,
+   tip:"Fatigue ou malaise : on le dit au chef d'équipe avant de partir en tournée. Un réflexe en moins, c'est un risque en plus."},
 ];
 
 const byId = Object.fromEntries(CARDS.map(c=>[c.id,c]));
@@ -485,15 +542,17 @@ function lockedInfo(i){
   $('#go-add').onclick=()=>{closeModal();show('add');};
 }
 function cardDetailHTML(c){
-  const ctr = dById[c.counter];
+  const ctr = DANGERS.filter(d=>d.by===c.id);
   return `<div class="detail">
     <div class="t">${esc(c.name)}</div>
     <div class="c">${esc(c.classe)} · JSV ${c.n}/${TOTAL}</div>
     <div class="chips">
       <span class="chip atk">Attaque ${c.atk}</span><span class="chip def">Défense ${c.def}</span>
       ${c.legend?'<span class="chip leg">Légendaire</span>':''}
-      ${ctr?`<span class="chip">Atout contre ${esc(ctr.name)} (+${BONUS})</span>`:''}
-    </div></div>`;
+    </div>
+    ${ctr.length?`<div class="c" style="margin-top:12px">Atout +${BONUS} contre :</div>
+    <div class="chips">${ctr.map(d=>`<span class="chip">${esc(d.name)}</span>`).join('')}</div>`:''}
+    </div>`;
 }
 function openCard(c){
   if(!state.seen[c.id]){ state.seen[c.id]=1; save(); renderCollection(); }
@@ -668,7 +727,7 @@ async function decodeQR(file){
 let battle = null;
 const ROLES = ['atk','def','atk']; // manche 1 : tu attaques, 2 : tu défends, 3 : tu attaques
 function dangerHTML(d){
-  return `<div class="dcard"><div class="tag">Danger</div><div class="dt">${esc(d.name)}</div>${ICONS[d.id]}
+  return `<div class="dcard"><div class="tag">Danger</div><div class="dt">${esc(d.name)}</div>${ICONS[d.icon]||ICONS.tri}
     <div class="dst"><span class="shield b">${d.def}</span><span class="shield r">${d.atk}</span></div></div>`;
 }
 function renderBattleHome(){
@@ -681,7 +740,7 @@ function renderBattleHome(){
   }
   v.innerHTML = `<h2>Combat contre les Dangers</h2>
     <div class="card-panel rules">
-      Ton équipe affronte 3 Dangers de la tournée, en 3 manches. Remporte-en 2 pour gagner.
+      Ton équipe affronte 3 Dangers tirés au hasard parmi les ${DANGERS.length} de la tournée, en 3 manches. Remporte-en 2 pour gagner.
       <ul>
         <li><b>Manches 1 et 3, tu attaques</b> : ton Attaque (rouge) + un dé contre la Défense du Danger + un dé.</li>
         <li><b>Manche 2, le Danger attaque</b> : son Attaque + un dé contre ta Défense (bleue) + un dé.</li>
@@ -748,7 +807,7 @@ function renderBattle(){
       const c = byId[h.id];
       const el = document.createElement('button');
       el.className = 'pick'+(h.used?' used':'');
-      const isAtout = c.counter===foe.id;
+      const isAtout = foe.by===c.id;
       el.innerHTML = `<img src="${c.img}" alt="${esc(c.name)}">${isAtout&&!h.used?`<span class="atout">Atout +${BONUS}</span>`:''}`;
       el.onclick = ()=>playRound(h);
       $('#hand').appendChild(el);
@@ -777,7 +836,7 @@ function renderBattle(){
 function playRound(h){
   const b = battle, foe = b.foes[b.round], role = ROLES[b.round], c = byId[h.id];
   h.used = true;
-  const bonus = c.counter===foe.id ? BONUS : 0;
+  const bonus = foe.by===c.id ? BONUS : 0;
   const meDie=d6(), foeDie=d6();
   let r;
   if(role==='atk'){

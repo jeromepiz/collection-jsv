@@ -1,6 +1,6 @@
 /* Collection JSV : fonctionnement hors réseau.
    Changer VERSION à chaque mise à jour du site pour que les téléphones récupèrent la nouvelle version. */
-const VERSION = 'jsv-v2';
+const VERSION = 'jsv-v3';
 const FILES = [
   './', 'index.html', 'manifest.webmanifest', 'vendor/jsQR.js',
   'cards/c01.jpg', 'cards/c05.jpg', 'cards/c06.jpg', 'cards/c07.jpg', 'cards/c08.jpg', 'cards/dos.jpg',
