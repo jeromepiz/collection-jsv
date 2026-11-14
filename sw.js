@@ -1,6 +1,6 @@
 /* Collection JSV : fonctionnement hors réseau.
    Changer VERSION à chaque mise à jour du site pour que les téléphones récupèrent la nouvelle version. */
-const VERSION = 'jsv-v3';
+const VERSION = 'jsv-v4';
 const FILES = [
   './', 'index.html', 'manifest.webmanifest', 'vendor/jsQR.js',
   'cards/c01.jpg', 'cards/c05.jpg', 'cards/c06.jpg', 'cards/c07.jpg', 'cards/c08.jpg', 'cards/dos.jpg',
@@ -24,10 +24,11 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
+  if (new URL(req.url).pathname.endsWith('version.json')) return; // toujours depuis le réseau
   // Page : réseau d'abord (pour avoir la dernière version), cache si pas de réseau
   if (req.mode === 'navigate') {
     e.respondWith(
-      fetch(req).then(r => { const copy = r.clone(); caches.open(VERSION).then(c => c.put('index.html', copy)); return r; })
+      fetch(req.url, { cache: 'no-cache' }).then(r => { const copy = r.clone(); caches.open(VERSION).then(c => c.put('index.html', copy)); return r; })
         .catch(() => caches.match('index.html'))
     );
     return;

@@ -15,7 +15,8 @@ Scanner un QR code avec l'appareil photo du téléphone ouvre l'appli et ajoute 
 ## Mettre à jour
 
 1. Modifier les fichiers, en particulier le tableau `CARDS` dans `index.html` pour ajouter une carte (image dans `cards/`).
-2. Dans `sw.js`, changer `VERSION` (par exemple `jsv-v2`) et ajouter les nouvelles images à la liste `FILES`.
+2. Dans `sw.js`, changer `VERSION` (par exemple `jsv-v5`) et ajouter les nouvelles images à la liste `FILES`.
+3. Changer le numéro de version dans `version.json` **et** la constante `APP_VERSION` de `index.html` (les deux doivent être identiques). Les téléphones détectent la nouvelle version au retour dans l'appli et se mettent à jour seuls.
 
 Les codes des cartes ne sont pas dans ce dépôt : `index.html` ne contient que leur empreinte (SHA-256).
 

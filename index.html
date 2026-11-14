@@ -1016,9 +1016,49 @@ $('#w-key').onclick = async ()=>{
 Promise.resolve(linkDone).then(()=>setTimeout(maybeGuide, 300));
 
 /* Fonctionnement hors réseau */
+let swReg = null;
 if('serviceWorker' in navigator && (location.protocol==='https:' || location.hostname==='localhost')){
-  window.addEventListener('load', ()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); });
+  window.addEventListener('load', ()=>{ navigator.serviceWorker.register('sw.js').then(r=>swReg=r).catch(()=>{}); });
 }
+
+/* Mise à jour automatique : à chaque retour sur l'appli, on regarde si une nouvelle version est en ligne.
+   APP_VERSION doit être identique au contenu de version.json. */
+const APP_VERSION = '2026-11-14.5';
+let lastCheck = 0, pendingUpdate = false;
+function busy(){ return !!battle && battle.phase!=='end' || $('#modal').classList.contains('on'); }
+const RELOAD_KEY = 'jsv-reloaded-for';
+async function applyUpdate(v){
+  try{ sessionStorage.setItem(RELOAD_KEY, v||''); }catch(e){}
+  try{ await Promise.all([fetch('./',{cache:'reload'}), fetch('index.html',{cache:'reload'})]); }catch(e){}
+  location.reload();
+}
+function alreadyTried(v){ try{ return sessionStorage.getItem(RELOAD_KEY)===v; }catch(e){ return false; } }
+async function checkUpdate(force){
+  if(!navigator.onLine) return;
+  const now = Date.now();
+  if(!force && now - lastCheck < 30000) return;
+  lastCheck = now;
+  try{
+    const r = await fetch('version.json?t='+now, {cache:'no-store'});
+    if(!r.ok) return;
+    const v = (await r.json()).v;
+    if(!v || v===APP_VERSION) return;
+    if(swReg) try{ await swReg.update(); }catch(e){}
+    // Une seule tentative automatique par version : évite toute boucle si le serveur sert encore l'ancienne page
+    if(busy() || alreadyTried(v)){ pendingUpdate = v; showUpdateBar(v); }
+    else applyUpdate(v);
+  }catch(e){}
+}
+function showUpdateBar(v){
+  const tb = $('#topbar');
+  tb.querySelector('span').textContent = 'Nouvelle version disponible.';
+  const b = $('#tb-open'); b.textContent = 'Mettre à jour'; b.onclick = ()=>applyUpdate(v);
+  tb.classList.add('on');
+}
+document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='visible') checkUpdate(); });
+window.addEventListener('pageshow', e=>{ if(e.persisted) checkUpdate(true); });
+window.addEventListener('online', ()=>checkUpdate(true));
+setTimeout(()=>checkUpdate(true), 1500);
 </script>
 </body>
 </html>
